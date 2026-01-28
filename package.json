@@ -1,0 +1,31 @@
+{
+  "name": "patient-management-system",
+  "version": "1.0.0",
+  "description": "Patient Management System with Vercel Serverless",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "vercel dev",
+    "deploy": "vercel --prod",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@vercel/node": "^3.0.0",
+    "mongodb": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/mongodb": "^4.0.7",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/cors": "^2.8.13",
+    "typescript": "^5.0.0",
+    "vercel": "^33.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
