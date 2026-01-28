@@ -3,8 +3,13 @@
     "target": "ES2020",
     "module": "commonjs",
     "lib": ["ES2020"],
-    "outDir": "./dist",
-    "rootDir": "./",
+    
+    // Remove outDir - Vercel runs TypeScript directly
+    // "outDir": "./dist",  // REMOVE THIS LINE
+    
+    // Specify root directory more precisely
+    "rootDir": ".",
+    
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -12,12 +17,30 @@
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    
+    // Keep node types
     "types": ["node"],
+    
+    // Base URL for module resolution
     "baseUrl": ".",
+    
+    // Simplified path mappings (optional)
     "paths": {
-      "@/*": ["./*"]
+      "@lib/*": ["lib/*"],
+      "@api/*": ["api/*"]
     }
   },
-  "include": ["api/**/*", "lib/**/*"],
-  "exclude": ["node_modules", "dist"]
+  
+  // Include ONLY what Vercel needs
+  "include": ["api/**/*.ts", "lib/**/*.ts"],
+  
+  // Exclude more aggressively
+  "exclude": [
+    "node_modules", 
+    "dist", 
+    ".vercel",
+    ".git",
+    "*.test.ts",
+    "*.spec.ts"
+  ]
 }
