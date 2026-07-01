@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            color: #1a1a2e;
+            background: #f8fafc;
+            line-height: 1.6;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.95);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #e2e8f0;
+            z-index: 1000;
+            padding: 0 2rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e3a5f;
+            text-decoration: none;
+        }
+
+        .navbar .logo .icon {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #475569;
+            font-weight: 500;
+            font-size: 0.925rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+
+        .nav-links .active {
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(37,99,235,0.35);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #2563eb;
+            border: 1.5px solid #2563eb;
+        }
+
+        .btn-outline:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-lg {
+            padding: 0.85rem 2.2rem;
+            font-size: 1rem;
+            border-radius: 10px;
+        }
+
+        /* ===== HAMBURGER (mobile) ===== */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            width: 24px;
+            height: 2.5px;
+            background: #1e3a5f;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            margin-top: 64px;
+            padding: 5rem 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(165deg, #eff6ff 0%, #f0f9ff 40%, #ecfdf5 100%);
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #0f172a;
+            max-width: 700px;
+            margin: 0 auto 1rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: #64748b;
+            max-width: 550px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ===== FEATURES ===== */
+        .section {
+            padding: 4rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .section .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 3rem;
+            font-size: 1.05rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .feature-card .icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .icon-blue   { background: #dbeafe; color: #2563eb; }
+        .icon-green  { background: #dcfce7; color: #16a34a; }
+        .icon-purple { background: #f3e8ff; color: #9333ea; }
+        .icon-orange { background: #ffedd5; color: #ea580c; }
+        .icon-teal   { background: #ccfbf1; color: #0d9488; }
+
+        .feature-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        /* ===== STATS ===== */
+        .stats {
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 3rem 2rem;
+        }
+
+        .stats-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        .stat p {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* ===== CTA ===== */
+        .cta {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            color: white;
+        }
+
+        .cta h2 {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .cta p {
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+        }
+
+        .btn-white {
+            background: white;
+            color: #2563eb;
+            font-weight: 700;
+        }
+
+        .btn-white:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            padding: 2rem;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .footer a {
+            color: #64748b;
+            text-decoration: none;
+            margin: 0 0.5rem;
+        }
+
+        .footer a:hover {
+            color: #2563eb;
+        }
+
+        /* ===== MOBILE ===== */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 64px;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                gap: 0;
+                border-bottom: 1px solid #e2e8f0;
+                padding: 0.5rem 0;
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .nav-links li {
+                padding: 0.75rem 2rem;
+            }
+
+            .nav-links .btn {
+                margin: 0.5rem 2rem;
+                text-align: center;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== NAVBAR ========== -->
+    <nav class="navbar">
+        <a href="/" class="logo">
+            <div class="icon">&#9829;</div>
+            <span>PMS</span>
+        </a>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="/" class="active">Home</a></li>
+            <li><a href="/api/patients">Patients</a></li>
+            <li><a href="/api/appointments">Appointments</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="/api/auth/login" class="btn btn-outline">Login</a></li>
+        </ul>
+
+        <button class="hamburger" id="hamburger" type="button" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- ========== HERO ========== -->
+    <section class="hero">
+        <h1>Manage Patients <span>Smarter</span> & Faster</h1>
+        <p>
+            A modern, secure platform for managing patient records, scheduling
+            appointments, and organizing medical history — all in one place.
+        </p>
+        <div class="btn-group">
+            <a href="/api/patients" class="btn btn-primary btn-lg">View Patients API</a>
+            <a href="#features" class="btn btn-outline btn-lg">Explore Features</a>
+        </div>
+    </section>
+
+    <!-- ========== STATS ========== -->
+    <div class="stats">
+        <div class="stats-inner">
+            <div class="stat">
+                <h3>REST</h3>
+                <p>API Architecture</p>
+            </div>
+            <div class="stat">
+                <h3>MongoDB</h3>
+                <p>Database Engine</p>
+            </div>
+            <div class="stat">
+                <h3>JWT</h3>
+                <p>Authentication</p>
+            </div>
+            <div class="stat">
+                <h3>Vercel</h3>
+                <p>Cloud Deployment</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== FEATURES ========== -->
+    <section class="section" id="features">
+        <h2>Everything You Need</h2>
+        <p class="subtitle">Built from the ground up for healthcare workflows.</p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="icon icon-blue">&#128196;</div>
+                <h3>Patient Records</h3>
+                <p>Store and manage detailed patient profiles, medical history, and contact information securely.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon icon-green">&#128197;</div>
+                <h3>Appointments</h3>
+                <p>Schedule, update, and track patient appointments with full CRUD API endpoints.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon icon-purple">&#128274;</div>
+                <h3>Role-Based Auth</h3>
+                <p>JWT authentication with bcrypt password hashing. Admin, doctor, and staff access levels.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon icon-orange">&#9881;</div>
+                <h3>RESTful API</h3>
+                <p>Clean, versioned API endpoints following REST conventions. Easy to integrate with any frontend.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon icon-teal">&#128640;</div>
+                <h3>Serverless</h3>
+                <p>Deployed on Vercel's edge network. Scales automatically, zero server maintenance.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon icon-blue">&#128230;</div>
+                <h3>Validation</h3>
+                <p>Input validation on all endpoints. Type-safe with TypeScript throughout the codebase.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA ========== -->
+    <section class="cta">
+        <h2>Ready to Explore the API?</h2>
+        <p>All endpoints are live and documented. Start building your frontend today.</p>
+        <a href="/api/patients" class="btn btn-white btn-lg">Try the API &rarr;</a>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <p>
+            <a href="/">Home</a> &middot;
+            <a href="/api/patients">Patients</a> &middot;
+            <a href="/api/appointments">Appointments</a> &middot;
+            <a href="#features">Features</a>
+        </p>
+        <p style="margin-top:0.5rem;">&copy; 2026 Patient Management System. Built with TypeScript &amp; Vercel.</p>
+    </footer>
+
+    <!-- ========== MOBILE MENU SCRIPT ========== -->
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks  = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+    </script>
+
+</body>
+</html>
